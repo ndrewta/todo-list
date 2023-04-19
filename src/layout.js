@@ -24,8 +24,10 @@ function createList() {
   const elemNames = ["New Project", "Today", "Upcoming"];
   elemNames.forEach((name) => {
     const item = document.createElement("li");
-    item.textContent = name;
-    list.append(item);
+    const button = document.createElement("button");
+    button.textContent = name;
+    item.appendChild(button);
+    list.appendChild(item);
   });
 
   return list;

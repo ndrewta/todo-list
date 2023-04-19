@@ -47,3 +47,15 @@ li {
   grid-area: footer;
   background-color: rgb(128, 125, 125);
 }
+
+#form {
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* pointer-events: none; */
+  border-radius: 20px;
+  background-color: rgb(233, 240, 250);
+  box-shadow: 3px 3px 10px rgb(204, 196, 196);
+}
