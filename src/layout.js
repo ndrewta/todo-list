@@ -20,12 +20,21 @@ function createList() {
   // List
   const list = document.createElement("ul");
 
+  // Camel case
+  function toCamelCase(str) {
+    return str
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+  }
+
   // List elements
   const elemNames = ["New Project", "Today", "Upcoming"];
   elemNames.forEach((name) => {
     const item = document.createElement("li");
     const button = document.createElement("button");
     button.textContent = name;
+    const camelName = toCamelCase(name);
+    button.setAttribute("id", camelName);
     item.appendChild(button);
     list.appendChild(item);
   });
