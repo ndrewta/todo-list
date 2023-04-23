@@ -7,6 +7,7 @@ module.exports = {
     index: "./src/index.js",
     form: "./src/form.js",
     pubSub: "./src/pubsub.js",
+    createProjects: "./src/createProjects.js",
   },
   plugins: [
     new HtmlWebpackPlugin({

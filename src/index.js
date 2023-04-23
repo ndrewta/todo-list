@@ -1,13 +1,21 @@
 import "./style.css";
 import layoutInit from "./layout";
-import form from "./form";
+import formInit from "./form";
 import pubSub from "./pubsub";
+import createProjects from "./createProjects";
 
 layoutInit();
 
 const ps = pubSub();
-const newForm = form("#content");
-const newBtn = document.getElementById("newProject");
+const form = formInit("#content");
+const cp = createProjects();
+form.setForm();
+const formElem = document.querySelector("form");
+const newProjectBtn = document.getElementById("newProject");
 
-newBtn.addEventListener("click", () => ps.publish("toggle-form", null));
-ps.subscribe("toggle-form", newForm.updateContent);
+newProjectBtn.addEventListener("click", () => ps.publish("toggle-form", null));
+formElem.addEventListener("submit", (e) =>
+  ps.publish("submit-form", { e, formElem })
+);
+ps.subscribe("toggle-form", form.toggleForm);
+ps.subscribe("submit-form", cp.submit);

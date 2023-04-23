@@ -14,6 +14,7 @@ export default function createForm(elem) {
       id: "title",
       name: "title",
       required: true,
+      disabled: true,
     });
     // Append
     div.appendChild(label);
@@ -37,6 +38,7 @@ export default function createForm(elem) {
       id: "date",
       name: "date",
       required: true,
+      disabled: true,
     });
     // Append
     div.appendChild(label);
@@ -51,12 +53,16 @@ export default function createForm(elem) {
     p.textContent = "Priority:";
     const inputs = [];
     const values = ["low", "med", "high"];
+
+    function capitalise(i) {
+      return i && i[0].toUpperCase() + i.slice(1);
+    }
     values.forEach((value) => {
       // Label
       const label = document.createElement("label");
       Object.assign(label, {
-        textContent: value.toUpperCase(),
-        for: value,
+        textContent: capitalise(value),
+        htmlFor: value,
       });
       inputs.push(label);
       // Input
@@ -66,6 +72,8 @@ export default function createForm(elem) {
         id: value,
         name: "priority",
         value,
+        disabled: true,
+        required: true,
       });
       inputs.push(input);
     });
@@ -87,13 +95,15 @@ export default function createForm(elem) {
       textContent: "Submit",
       type: "submit",
       id: "submit",
+      disabled: true,
     });
     // Cancel button
     const resetBtn = document.createElement("button");
     Object.assign(resetBtn, {
-      textContent: "Reset",
+      textContent: "Clear",
       type: "reset",
-      id: "reset",
+      id: "clear",
+      disabled: true,
     });
     div.appendChild(submitBtn);
     div.appendChild(resetBtn);
@@ -104,7 +114,7 @@ export default function createForm(elem) {
   function createLayout() {
     // Div
     const div = document.createElement("div");
-    div.setAttribute("id", "form");
+    div.setAttribute("class", "form");
     // Form
     const form = document.createElement("form");
     form.setAttribute("method", "post");
@@ -122,17 +132,31 @@ export default function createForm(elem) {
     return div;
   }
 
-  function clearDom(element) {
-    while (element.firstChild) {
-      element.firstChild.remove();
-    }
-  }
-
-  function updateContent() {
+  function setForm() {
     const content = document.querySelector(elem);
-    clearDom(content);
     const form = createLayout();
     content.appendChild(form);
   }
-  return { updateContent };
+  function toggleForm() {
+    const formDiv = document.querySelector(".form");
+    const title = document.getElementById("title");
+    const date = document.getElementById("date");
+    const low = document.getElementById("low");
+    const med = document.getElementById("med");
+    const high = document.getElementById("high");
+    const submitBtn = document.getElementById("submit");
+    const resetBtn = document.getElementById("clear");
+    const formList = [title, date, low, med, high, submitBtn, resetBtn];
+    formDiv.classList.toggle("form-toggle");
+    formList.forEach((inputElem) => {
+      const item = inputElem;
+      if (item.disabled) {
+        item.disabled = false;
+      } else {
+        item.disabled = true;
+      }
+    });
+  }
+
+  return { setForm, toggleForm };
 }
