@@ -8,6 +8,7 @@ module.exports = {
     form: "./src/form.js",
     pubSub: "./src/pubsub.js",
     createProjects: "./src/createProjects.js",
+    displayProjects: "./src/displayProjects.js",
   },
   plugins: [
     new HtmlWebpackPlugin({
