@@ -10,13 +10,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/createProjects.js":
-/*!*******************************!*\
-  !*** ./src/createProjects.js ***!
-  \*******************************/
+/***/ "./src/displayProjects.js":
+/*!********************************!*\
+  !*** ./src/displayProjects.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ createProjects)\n/* harmony export */ });\nfunction createProjects() {\n  let projects = [];\n\n  class Project {\n    constructor(title, date, priority, description, itemList) {\n      this.title = title;\n      this.date = date;\n      this.priority = priority;\n      this.description = description;\n      this.itemList = itemList;\n    }\n  }\n\n  function submit({ e, formElem }) {\n    e.preventDefault();\n\n    const data = new FormData(formElem);\n    const title = data.get(\"title\");\n    const date = data.get(\"date\");\n    const priority = data.get(\"priority\");\n    const description = data.get(\"description\");\n    const itemList = data.getAll(\"items\");\n\n    const project = new Project(title, date, priority, description, itemList);\n\n    projects.push(project);\n    console.log(projects);\n    formElem.reset();\n  }\n  return { submit, projects };\n}\n\n\n//# sourceURL=webpack://todo-list/./src/createProjects.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ displayProjects)\n/* harmony export */ });\nfunction displayProjects(elem) {\n  const content = document.querySelector(elem);\n  function createCover(projects) {\n    const index = projects.length - 1;\n    const project = projects[index];\n\n    const cover = document.createElement(\"div\");\n    cover.setAttribute(\"class\", \"cover\");\n    cover.setAttribute(\"id\", project.priority);\n    cover.setAttribute(\"data-id\", index);\n\n    const titleDiv = document.createElement(\"div\");\n    const title = document.createElement(\"h2\");\n    const titleData = project.title;\n    title.textContent = `Title: ${titleData}`;\n    titleDiv.appendChild(title);\n    cover.appendChild(titleDiv);\n\n    const dateDiv = document.createElement(\"div\");\n    const date = document.createElement(\"h2\");\n    const dateData = project.date;\n    date.textContent = `Due: ${dateData}`;\n    dateDiv.appendChild(date);\n    cover.appendChild(dateDiv);\n\n    const descriptionDiv = document.createElement(\"div\");\n    const description = document.createElement(\"h2\");\n    const descriptionData = project.description;\n    description.textContent = `Description: ${descriptionData}`;\n    descriptionDiv.appendChild(description);\n    cover.appendChild(descriptionDiv);\n\n    content.appendChild(cover);\n  }\n\n  function displayContent(projects, id) {\n    const projectElem = projects[id];\n    console.log(projectElem.itemList);\n  }\n\n  return { createCover, displayContent };\n}\n\n\n//# sourceURL=webpack://todo-list/./src/displayProjects.js?");
 
 /***/ })
 
@@ -60,7 +60,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__["./src/createProjects.js"](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__["./src/displayProjects.js"](0, __webpack_exports__, __webpack_require__);
 /******/ 	
 /******/ })()
 ;
