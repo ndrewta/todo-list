@@ -11,18 +11,32 @@ export default function displayProjects(elem) {
 
     const titleDiv = document.createElement("div");
     const title = document.createElement("h2");
-    title.textContent = project.title;
+    const titleData = project.title;
+    title.textContent = `Title: ${titleData}`;
     titleDiv.appendChild(title);
     cover.appendChild(titleDiv);
 
     const dateDiv = document.createElement("div");
     const date = document.createElement("h2");
-    date.textContent = project.date;
+    const dateData = project.date;
+    date.textContent = `Due: ${dateData}`;
     dateDiv.appendChild(date);
     cover.appendChild(dateDiv);
+
+    const descriptionDiv = document.createElement("div");
+    const description = document.createElement("h2");
+    const descriptionData = project.description;
+    description.textContent = `Description: ${descriptionData}`;
+    descriptionDiv.appendChild(description);
+    cover.appendChild(descriptionDiv);
 
     content.appendChild(cover);
   }
 
-  return { createCover };
+  function displayContent(projects, id) {
+    const projectElem = projects[id];
+    console.log(projectElem.itemList);
+  }
+
+  return { createCover, displayContent };
 }

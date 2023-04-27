@@ -27,4 +27,5 @@ formElem.addEventListener("submit", () => ps.publish("toggle-form", null));
 
 ps.subscribe("toggle-form", form.toggleForm);
 ps.subscribe("submit-form", cp.submit);
+ps.subscribe("submit-form", form.clearListItems);
 ps.subscribe("create-cover", dp.createCover);

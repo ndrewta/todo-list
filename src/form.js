@@ -28,7 +28,7 @@ export default function createForm(elem) {
     // Label
     const label = document.createElement("label");
     Object.assign(label, {
-      textContent: "Date:",
+      textContent: "Due:",
       for: "date",
     });
     // Input
@@ -47,10 +47,36 @@ export default function createForm(elem) {
     return div;
   }
 
+  function createDescriptionInput() {
+    const div = document.createElement("div");
+    // Label
+    const label = document.createElement("label");
+    Object.assign(label, {
+      textContent: "Description:",
+      for: "description",
+    });
+    // Input
+    const textArea = document.createElement("textarea");
+    Object.assign(textArea, {
+      id: "description",
+      name: "description",
+      required: true,
+      disabled: true,
+    });
+    // Append
+    div.appendChild(label);
+    div.appendChild(textArea);
+
+    return div;
+  }
+
   function createRadioInputs() {
     const div = document.createElement("div");
-    const p = document.createElement("p");
-    p.textContent = "Priority:";
+    const divLabel = document.createElement("label");
+    Object.assign(divLabel, {
+      textContent: "Priority: ",
+      for: "priority",
+    });
     const inputs = [];
     const values = ["low", "med", "high"];
 
@@ -78,11 +104,85 @@ export default function createForm(elem) {
       inputs.push(input);
     });
 
-    div.appendChild(p);
+    div.appendChild(divLabel);
     inputs.forEach((input) => {
       div.appendChild(input);
     });
     return div;
+  }
+
+  function createListItems() {
+    let itemCounter = 1;
+    const div = document.createElement("div");
+    const divLabel = document.createElement("label");
+    Object.assign(divLabel, {
+      textContent: "Add items ",
+      for: "itemBtn",
+    });
+    const addBtn = document.createElement("button");
+    Object.assign(addBtn, {
+      textContent: "+ icon",
+      id: "itemBtn",
+      type: "button",
+    });
+
+    // List div
+    const list = document.createElement("ul");
+    list.setAttribute("id", "listItems");
+
+    function createInput() {
+      // Creates to do items
+      const id = `item${itemCounter}`;
+      const li = document.createElement("li");
+      li.setAttribute("id", id);
+      const localDiv = document.createElement("div");
+
+      // Input
+      const input = document.createElement("input");
+      Object.assign(input, {
+        type: "text",
+        name: "items",
+        id,
+      });
+      // Remove button
+      const removeBtn = document.createElement("button");
+      Object.assign(removeBtn, {
+        textContent: "- icon",
+        id,
+        type: "button",
+      });
+
+      // Hook eventListener to remove button
+      removeBtn.addEventListener("click", () => {
+        const item = document.getElementById(id);
+        item.remove();
+        itemCounter -= 1;
+      });
+
+      // Increment counter to raise ID #
+      itemCounter += 1;
+      localDiv.appendChild(input);
+      localDiv.appendChild(removeBtn);
+      li.appendChild(localDiv);
+
+      list.appendChild(li);
+    }
+    // Hook eventListener to run createInput
+    addBtn.addEventListener("click", createInput);
+
+    // Append
+    div.appendChild(divLabel);
+    div.appendChild(addBtn);
+    div.appendChild(list);
+
+    return div;
+  }
+
+  function clearListItems() {
+    const list = document.getElementById("listItems");
+    while (list.hasChildNodes()) {
+      list.removeChild(list.firstChild);
+    }
   }
 
   function createButtons() {
@@ -97,7 +197,7 @@ export default function createForm(elem) {
       id: "submit",
       disabled: true,
     });
-    // Cancel button
+    // Clear button
     const resetBtn = document.createElement("button");
     Object.assign(resetBtn, {
       textContent: "Clear",
@@ -105,6 +205,7 @@ export default function createForm(elem) {
       id: "clear",
       disabled: true,
     });
+    resetBtn.addEventListener("click", clearListItems);
     div.appendChild(submitBtn);
     div.appendChild(resetBtn);
 
@@ -121,10 +222,14 @@ export default function createForm(elem) {
     const title = createTitleInput();
     const date = createDateInput();
     const radio = createRadioInputs();
+    const description = createDescriptionInput();
+    const listItems = createListItems();
     const btns = createButtons();
     form.appendChild(title);
     form.appendChild(date);
     form.appendChild(radio);
+    form.appendChild(description);
+    form.appendChild(listItems);
     form.appendChild(btns);
     // Append to div
     div.appendChild(form);
@@ -144,9 +249,21 @@ export default function createForm(elem) {
     const low = document.getElementById("low");
     const med = document.getElementById("med");
     const high = document.getElementById("high");
+    const description = document.getElementById("description");
+    const listItems = document.getElementById("listItems");
     const submitBtn = document.getElementById("submit");
     const resetBtn = document.getElementById("clear");
-    const formList = [title, date, low, med, high, submitBtn, resetBtn];
+    const formList = [
+      title,
+      date,
+      low,
+      med,
+      high,
+      description,
+      listItems,
+      submitBtn,
+      resetBtn,
+    ];
     formDiv.classList.toggle("form-toggle");
     formList.forEach((inputElem) => {
       const item = inputElem;
@@ -158,5 +275,5 @@ export default function createForm(elem) {
     });
   }
 
-  return { setForm, toggleForm };
+  return { setForm, toggleForm, clearListItems };
 }
