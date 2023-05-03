@@ -1,3 +1,5 @@
+import ps from "./pubsub";
+
 function createHeader() {
   // Header
   const header = document.createElement("div");
@@ -37,6 +39,10 @@ function createList() {
     button.setAttribute("id", camelName);
     item.appendChild(button);
     list.appendChild(item);
+
+    if (name === "New Project") {
+      button.addEventListener("click", () => ps.publish("toggle-form", null));
+    }
   });
 
   return list;

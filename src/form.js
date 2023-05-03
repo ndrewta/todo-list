@@ -1,4 +1,7 @@
+import ps from "./pubsub";
+
 export default function createForm(elem) {
+  const content = document.querySelector(elem);
   function createTitleInput() {
     const div = document.createElement("div");
     // Label
@@ -110,9 +113,7 @@ export default function createForm(elem) {
     });
     return div;
   }
-
   function createListItems() {
-    let itemCounter = 1;
     const div = document.createElement("div");
     const divLabel = document.createElement("label");
     Object.assign(divLabel, {
@@ -132,7 +133,7 @@ export default function createForm(elem) {
 
     function createInput() {
       // Creates to do items
-      const id = `item${itemCounter}`;
+      const id = "item";
       const li = document.createElement("li");
       li.setAttribute("id", id);
       const localDiv = document.createElement("div");
@@ -156,11 +157,8 @@ export default function createForm(elem) {
       removeBtn.addEventListener("click", () => {
         const item = document.getElementById(id);
         item.remove();
-        itemCounter -= 1;
       });
 
-      // Increment counter to raise ID #
-      itemCounter += 1;
       localDiv.appendChild(input);
       localDiv.appendChild(removeBtn);
       li.appendChild(localDiv);
@@ -233,15 +231,15 @@ export default function createForm(elem) {
     form.appendChild(btns);
     // Append to div
     div.appendChild(form);
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      ps.publish("submit-form", { formElem: form });
+    });
+    form.addEventListener("submit", () => ps.publish("toggle-form", null));
 
     return div;
   }
 
-  function setForm() {
-    const content = document.querySelector(elem);
-    const form = createLayout();
-    content.appendChild(form);
-  }
   function toggleForm() {
     const formDiv = document.querySelector(".form");
     const title = document.getElementById("title");
@@ -275,5 +273,8 @@ export default function createForm(elem) {
     });
   }
 
-  return { setForm, toggleForm, clearListItems };
+  const form = createLayout();
+  content.appendChild(form);
+  ps.subscribe("toggle-form", toggleForm);
+  ps.subscribe("clear-form", clearListItems);
 }

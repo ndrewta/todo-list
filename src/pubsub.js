@@ -1,4 +1,4 @@
-export default function pubSub() {
+function pubSub() {
   const subscribers = {};
 
   function publish(eventName, data) {
@@ -24,3 +24,6 @@ export default function pubSub() {
   }
   return { publish, subscribe };
 }
+
+const sharedPubSub = pubSub();
+export default sharedPubSub;

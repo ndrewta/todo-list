@@ -1,3 +1,5 @@
+import ps from "./pubsub";
+
 export default function createProjects() {
   let projects = [];
 
@@ -11,21 +13,27 @@ export default function createProjects() {
     }
   }
 
-  function submit({ e, formElem }) {
-    e.preventDefault();
-
+  function submit({ formElem }) {
     const data = new FormData(formElem);
     const title = data.get("title");
     const date = data.get("date");
     const priority = data.get("priority");
     const description = data.get("description");
     const itemList = data.getAll("items");
-
     const project = new Project(title, date, priority, description, itemList);
 
     projects.push(project);
-    console.log(projects);
+    ps.publish("create-cover", projects);
+    ps.publish("clear-form", null);
     formElem.reset();
   }
-  return { submit, projects };
+
+  function publishUpdatedArray() {
+    // Publish updated projects array
+    ps.publish("projects-update", projects);
+  }
+
+  ps.subscribe("projects-request", publishUpdatedArray);
+  ps.subscribe("submit-form", submit);
+  return { projects };
 }
