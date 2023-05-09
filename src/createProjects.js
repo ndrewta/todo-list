@@ -33,7 +33,20 @@ export default function createProjects() {
     ps.publish("projects-update", projects);
   }
 
+  function testSubmit(x) {
+    const title = `Test ${x}`;
+    const date = "12/12/2000";
+    const priority = "high";
+    const description = "asdasdasdasd";
+    const itemList = ["x1", "x2", "x3"];
+    const project = new Project(title, date, priority, description, itemList);
+
+    projects.push(project);
+    ps.publish("create-cover", projects);
+  }
+
   ps.subscribe("projects-request", publishUpdatedArray);
   ps.subscribe("submit-form", submit);
+  ps.subscribe("test", testSubmit);
   return { projects };
 }
