@@ -125,6 +125,7 @@ export default function createForm(elem) {
       textContent: "+ icon",
       id: "itemBtn",
       type: "button",
+      disabled: true,
     });
 
     // List div
@@ -242,28 +243,9 @@ export default function createForm(elem) {
 
   function toggleForm() {
     const formDiv = document.querySelector(".form");
-    const title = document.getElementById("title");
-    const date = document.getElementById("date");
-    const low = document.getElementById("low");
-    const med = document.getElementById("med");
-    const high = document.getElementById("high");
-    const description = document.getElementById("description");
-    const listItems = document.getElementById("listItems");
-    const submitBtn = document.getElementById("submit");
-    const resetBtn = document.getElementById("clear");
-    const formList = [
-      title,
-      date,
-      low,
-      med,
-      high,
-      description,
-      listItems,
-      submitBtn,
-      resetBtn,
-    ];
+    const formElements = formDiv.querySelectorAll("input, textarea, button");
     formDiv.classList.toggle("form-toggle");
-    formList.forEach((inputElem) => {
+    formElements.forEach((inputElem) => {
       const item = inputElem;
       if (item.disabled) {
         item.disabled = false;

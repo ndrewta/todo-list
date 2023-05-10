@@ -91,15 +91,15 @@ li {
   margin-bottom: 50px;
 }
 
-#low {
+#cover-low {
   background-color: rgb(202, 255, 202);
 }
 
-#med {
+#cover-med {
   background-color: rgb(250, 250, 189);
 }
 
-#high {
+#cover-high {
   background-color: rgb(252, 143, 143);
 }
 

@@ -13,7 +13,7 @@ export default function displayProjects(elem) {
 
     const cover = document.createElement("div");
     cover.setAttribute("class", "cover");
-    cover.setAttribute("id", project.priority);
+    cover.setAttribute("id", `cover-${project.priority}`);
     cover.setAttribute("data-id", index);
 
     const titleDiv = document.createElement("div");
