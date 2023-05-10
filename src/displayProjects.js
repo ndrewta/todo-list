@@ -68,13 +68,14 @@ export default function displayProjects(elem) {
 
   function saveProject(project, index, itemList) {
     const li = document.querySelectorAll(`#checklist > li`);
+
     for (let i = 0; i <= itemList.length - 1; i += 1) {
       const el = li[i];
       const input = el.querySelector("input");
-      itemList[i] = input.value;
+      itemList[i].value = input.value;
     }
     itemList.forEach((item, id) => {
-      if (item === "") {
+      if (item.value === "") {
         itemList.splice(id, 1);
       }
     });
@@ -93,10 +94,9 @@ export default function displayProjects(elem) {
       id: `item${itemList.length}`,
     });
     li.appendChild(input);
-
     div.appendChild(li);
-    itemList.push(input.value);
-    console.log(itemList);
+    const obj = { value: "", completed: false };
+    itemList.push(obj);
   }
 
   function editProject(index) {
@@ -122,7 +122,7 @@ export default function displayProjects(elem) {
       Object.assign(input, {
         type: "text",
         id: `item${i}`,
-        value: itemList[i],
+        value: itemList[i].value,
       });
       el.appendChild(input);
     }
@@ -199,7 +199,7 @@ export default function displayProjects(elem) {
       const label = document.createElement("label");
       label.setAttribute("for", `checkbox${itemList.indexOf(item)}`);
       Object.assign(label, {
-        textContent: item,
+        textContent: item.value,
       });
 
       const checkbox = document.createElement("input");
@@ -207,9 +207,15 @@ export default function displayProjects(elem) {
         type: "checkbox",
         id: `checkbox${itemList.indexOf(item)}`,
       });
+      if (item.completed) {
+        checkbox.checked = true;
+      }
       li.appendChild(label);
       li.appendChild(checkbox);
       list.appendChild(li);
+      checkbox.addEventListener("click", () => {
+        item.completed = true;
+      });
     });
     const returnBtn = document.createElement("button");
     Object.assign(returnBtn, {
@@ -229,6 +235,7 @@ export default function displayProjects(elem) {
       type: "button",
       id: "deleteBtn",
     });
+
     returnBtn.addEventListener("click", () => reloadProjectDisplay());
     editBtn.addEventListener("click", () => editProject(index));
     deleteBtn.addEventListener("click", () => deleteProject(index));

@@ -19,9 +19,11 @@ export default function createProjects() {
     const date = data.get("date");
     const priority = data.get("priority");
     const description = data.get("description");
-    const itemList = data.getAll("items");
+    const itemList = data
+      .getAll("items")
+      .map((item) => ({ value: item, completed: false }));
     const project = new Project(title, date, priority, description, itemList);
-
+    console.log(project);
     projects.push(project);
     ps.publish("create-cover", projects);
     ps.publish("clear-form", null);
@@ -38,7 +40,10 @@ export default function createProjects() {
     const date = "12/12/2000";
     const priority = "high";
     const description = "asdasdasdasd";
-    const itemList = ["x1", "x2", "x3"];
+    const itemList = ["x1", "x2", "x3"].map((item) => ({
+      value: item,
+      completed: false,
+    }));
     const project = new Project(title, date, priority, description, itemList);
 
     projects.push(project);
