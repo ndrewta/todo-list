@@ -13,7 +13,7 @@ export default function displayProjects(elem) {
 
     const cover = document.createElement("div");
     cover.setAttribute("class", "cover");
-    cover.setAttribute("id", `cover-${project.priority}`);
+    cover.setAttribute("id", `cover${project.priority}`);
     cover.setAttribute("data-id", index);
 
     const titleDiv = document.createElement("div");
@@ -67,6 +67,25 @@ export default function displayProjects(elem) {
   }
 
   function saveProject(project, index, itemList) {
+    // Save title
+    const title = document.querySelector("#titleDiv > input");
+    project.title = title.value;
+
+    // Save date
+    const date = document.querySelector("#dateDiv > input");
+    if (!(date.value === "")) {
+      project.date = date.value;
+    }
+
+    // Save select
+    const select = document.getElementById("prioritySelect");
+    project.priority = select.value;
+
+    // Save description
+    const description = document.querySelector("#descriptionDiv > textarea");
+    project.description = description.value;
+
+    // Save checklist
     const li = document.querySelectorAll(`#checklist > li`);
 
     for (let i = 0; i <= itemList.length - 1; i += 1) {
@@ -79,6 +98,7 @@ export default function displayProjects(elem) {
         itemList.splice(id, 1);
       }
     });
+
     clearDisplay();
     detailedDisplay(project, index);
   }
@@ -105,6 +125,7 @@ export default function displayProjects(elem) {
     const deleteBtn = document.getElementById("deleteBtn");
     deleteBtn.remove();
     returnBtn.remove();
+
     // Edit selected project
     const project = projects[index];
     const { itemList } = project;
@@ -138,6 +159,7 @@ export default function displayProjects(elem) {
     saveBtn.addEventListener("click", () =>
       saveProject(project, index, itemList)
     );
+
     // Add checklist items
     const addBtn = document.createElement("button");
     Object.assign(addBtn, {
@@ -148,6 +170,77 @@ export default function displayProjects(elem) {
       addChecklistItem(itemList, checklistUl)
     );
     checklistDiv.appendChild(addBtn);
+
+    // Edit priority
+    const projectPriority = project.priority;
+    const priorityDiv = document.getElementById("priorityDiv");
+    const priorityH2 = document.querySelector("#priorityDiv > h2");
+    priorityH2.textContent = "Priority: ";
+    const prioritySelect = document.createElement("select");
+    Object.assign(prioritySelect, {
+      name: "priority",
+      id: "prioritySelect",
+    });
+    const lowPriority = document.createElement("option");
+    Object.assign(lowPriority, {
+      textContent: "Low",
+      value: "Low",
+    });
+    const medPriority = document.createElement("option");
+    Object.assign(medPriority, {
+      textContent: "Medium",
+      value: "Medium",
+    });
+    const highPriority = document.createElement("option");
+    Object.assign(highPriority, {
+      textContent: "High",
+      value: "High",
+    });
+
+    if (projectPriority === "Low") {
+      lowPriority.selected = true;
+    } else if (projectPriority === "Medium") {
+      medPriority.selected = true;
+    } else {
+      highPriority.selected = true;
+    }
+    prioritySelect.appendChild(lowPriority);
+    prioritySelect.appendChild(medPriority);
+    prioritySelect.appendChild(highPriority);
+    priorityDiv.appendChild(prioritySelect);
+
+    // Edit title
+    const titleDiv = document.getElementById("titleDiv");
+    const titleH2 = document.querySelector("#titleDiv > h2");
+    titleH2.textContent = "Title: ";
+    const titleInput = document.createElement("input");
+    Object.assign(titleInput, {
+      defaultValue: project.title,
+      name: "title",
+    });
+    titleDiv.appendChild(titleInput);
+
+    // Edit date
+    const dateDiv = document.getElementById("dateDiv");
+    const dateH2 = document.querySelector("#dateDiv > h2");
+    dateH2.textContent = "Due: ";
+    const dateInput = document.createElement("input");
+    Object.assign(dateInput, {
+      type: "date",
+      name: "date",
+    });
+    dateDiv.appendChild(dateInput);
+
+    // Edit description
+    const descriptionDiv = document.getElementById("descriptionDiv");
+    const descriptionH2 = document.querySelector("#descriptionDiv > h2");
+    descriptionH2.textContent = "Description: ";
+    const descriptionInput = document.createElement("textarea");
+    Object.assign(descriptionInput, {
+      name: "description",
+      defaultValue: project.description,
+    });
+    descriptionDiv.appendChild(descriptionInput);
   }
 
   function deleteProject(index) {
@@ -163,6 +256,7 @@ export default function displayProjects(elem) {
     display.setAttribute("class", "display");
 
     const titleDiv = document.createElement("div");
+    titleDiv.setAttribute("id", "titleDiv");
     const title = document.createElement("h2");
     const titleData = project.title;
     title.textContent = `Title: ${titleData}`;
@@ -170,6 +264,7 @@ export default function displayProjects(elem) {
     display.appendChild(titleDiv);
 
     const dateDiv = document.createElement("div");
+    dateDiv.setAttribute("id", "dateDiv");
     const date = document.createElement("h2");
     const dateData = project.date;
     date.textContent = `Due: ${dateData}`;
@@ -177,11 +272,20 @@ export default function displayProjects(elem) {
     display.appendChild(dateDiv);
 
     const descriptionDiv = document.createElement("div");
+    descriptionDiv.setAttribute("id", "descriptionDiv");
     const description = document.createElement("h2");
     const descriptionData = project.description;
     description.textContent = `Description: ${descriptionData}`;
     descriptionDiv.appendChild(description);
     display.appendChild(descriptionDiv);
+
+    const priorityDiv = document.createElement("div");
+    priorityDiv.setAttribute("id", "priorityDiv");
+    const priority = document.createElement("h2");
+    const priorityData = project.priority;
+    priority.textContent = `Priority: ${priorityData}`;
+    priorityDiv.appendChild(priority);
+    display.appendChild(priorityDiv);
 
     const listDiv = document.createElement("div");
     listDiv.setAttribute("id", "checklistdiv");
@@ -225,7 +329,7 @@ export default function displayProjects(elem) {
     });
     const editBtn = document.createElement("button");
     Object.assign(editBtn, {
-      textContent: "Edit checklist",
+      textContent: "Edit",
       type: "button",
       id: "editBtn",
     });

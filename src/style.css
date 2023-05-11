@@ -91,15 +91,15 @@ li {
   margin-bottom: 50px;
 }
 
-#cover-low {
+#coverLow {
   background-color: rgb(202, 255, 202);
 }
 
-#cover-med {
+#coverMedium {
   background-color: rgb(250, 250, 189);
 }
 
-#cover-high {
+#coverHigh {
   background-color: rgb(252, 143, 143);
 }
 
@@ -107,4 +107,10 @@ li {
   border: solid 1px;
   padding: 0;
   margin: 0;
+}
+
+#priorityDiv {
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }

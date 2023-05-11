@@ -38,7 +38,7 @@ export default function createProjects() {
   function testSubmit(x) {
     const title = `Test ${x}`;
     const date = "12/12/2000";
-    const priority = "high";
+    const priority = "High";
     const description = "asdasdasdasd";
     const itemList = ["x1", "x2", "x3"].map((item) => ({
       value: item,

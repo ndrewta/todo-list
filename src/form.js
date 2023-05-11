@@ -75,42 +75,36 @@ export default function createForm(elem) {
 
   function createRadioInputs() {
     const div = document.createElement("div");
-    const divLabel = document.createElement("label");
-    Object.assign(divLabel, {
-      textContent: "Priority: ",
-      for: "priority",
+    const label = document.createElement("label");
+    Object.assign(label, {
+      textContent: "Priority:",
+      for: "formPriority",
     });
-    const inputs = [];
-    const values = ["low", "med", "high"];
-
-    function capitalise(i) {
-      return i && i[0].toUpperCase() + i.slice(1);
-    }
-    values.forEach((value) => {
-      // Label
-      const label = document.createElement("label");
-      Object.assign(label, {
-        textContent: capitalise(value),
-        htmlFor: value,
-      });
-      inputs.push(label);
-      // Input
-      const input = document.createElement("input");
-      Object.assign(input, {
-        type: "radio",
-        id: value,
-        name: "priority",
-        value,
-        disabled: true,
-        required: true,
-      });
-      inputs.push(input);
+    const prioritySelect = document.createElement("select");
+    Object.assign(prioritySelect, {
+      name: "priority",
+      id: "formPriority",
     });
-
-    div.appendChild(divLabel);
-    inputs.forEach((input) => {
-      div.appendChild(input);
+    const lowPriority = document.createElement("option");
+    Object.assign(lowPriority, {
+      textContent: "Low",
+      value: "Low",
     });
+    const medPriority = document.createElement("option");
+    Object.assign(medPriority, {
+      textContent: "Medium",
+      value: "Medium",
+    });
+    const highPriority = document.createElement("option");
+    Object.assign(highPriority, {
+      textContent: "High",
+      value: "High",
+    });
+    prioritySelect.appendChild(lowPriority);
+    prioritySelect.appendChild(medPriority);
+    prioritySelect.appendChild(highPriority);
+    div.appendChild(label);
+    div.appendChild(prioritySelect);
     return div;
   }
   function createListItems() {
