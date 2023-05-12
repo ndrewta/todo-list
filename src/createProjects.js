@@ -13,6 +13,13 @@ export default function createProjects() {
     }
   }
 
+  function sortDates() {
+    if (!projects.length <= 0) {
+      projects.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+    projects.reverse();
+  }
+
   function submit({ formElem }) {
     const data = new FormData(formElem);
     const title = data.get("title");
@@ -23,7 +30,6 @@ export default function createProjects() {
       .getAll("items")
       .map((item) => ({ value: item, completed: false }));
     const project = new Project(title, date, priority, description, itemList);
-    console.log(project);
     projects.push(project);
     ps.publish("create-cover", projects);
     ps.publish("clear-form", null);
@@ -32,6 +38,7 @@ export default function createProjects() {
 
   function publishUpdatedArray() {
     // Publish updated projects array
+    sortDates();
     ps.publish("projects-update", projects);
   }
 
@@ -47,6 +54,7 @@ export default function createProjects() {
     const project = new Project(title, date, priority, description, itemList);
 
     projects.push(project);
+    sortDates();
     ps.publish("create-cover", projects);
   }
 

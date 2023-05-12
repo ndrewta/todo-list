@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import ps from "./pubsub";
 
 export default function displayProjects(elem) {
@@ -25,7 +26,7 @@ export default function displayProjects(elem) {
 
     const dateDiv = document.createElement("div");
     const date = document.createElement("h2");
-    const dateData = project.date;
+    const dateData = format(new Date(project.date), "dd/MM/yyyy");
     date.textContent = `Due: ${dateData}`;
     dateDiv.appendChild(date);
     cover.appendChild(dateDiv);
@@ -48,7 +49,7 @@ export default function displayProjects(elem) {
 
   function reloadProjectDisplay() {
     clearDisplay();
-
+    ps.publish("projects-request", null);
     projects.forEach((project, index) => {
       createCover(project, index);
     });
@@ -74,7 +75,7 @@ export default function displayProjects(elem) {
     // Save date
     const date = document.querySelector("#dateDiv > input");
     if (!(date.value === "")) {
-      project.date = date.value;
+      project.date = format(new Date(date.value), "yyyy/MM/dd");
     }
 
     // Save select
@@ -267,7 +268,7 @@ export default function displayProjects(elem) {
     dateDiv.setAttribute("id", "dateDiv");
     const date = document.createElement("h2");
     const dateData = project.date;
-    date.textContent = `Due: ${dateData}`;
+    date.textContent = `Due: ${format(new Date(dateData), "dd/MM/yyyy")}`;
     dateDiv.appendChild(date);
     display.appendChild(dateDiv);
 
@@ -372,5 +373,5 @@ export default function displayProjects(elem) {
     expandProject(projects, e);
   });
   ps.subscribe("projects-update", updateProjectsArray);
-  ps.subscribe("create-cover", createCover);
+  ps.subscribe("create-cover", reloadProjectDisplay);
 }
