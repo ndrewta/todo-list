@@ -229,6 +229,7 @@ export default function displayProjects(elem) {
     Object.assign(dateInput, {
       type: "date",
       name: "date",
+      min: new Date().toISOString().slice(0, 10),
     });
     dateDiv.appendChild(dateInput);
 
@@ -368,10 +369,32 @@ export default function displayProjects(elem) {
     projects = updatedProjects;
   }
 
+  function showToday(today) {
+    clearDisplay();
+    ps.publish("projects-request", null);
+    projects.forEach((project, index) => {
+      if (project.date === today) {
+        createCover(project, index);
+      }
+    });
+  }
+
+  function showUpcoming(today) {
+    clearDisplay();
+    ps.publish("projects-request", null);
+
+    projects.forEach((project, index) => {
+      if (!(project.date === today)) {
+        createCover(project, index);
+      }
+    });
+  }
   content.addEventListener("click", (e) => {
     ps.publish("projects-request", null);
     expandProject(projects, e);
   });
   ps.subscribe("projects-update", updateProjectsArray);
-  ps.subscribe("create-cover", reloadProjectDisplay);
+  ps.subscribe("show-today", showToday);
+  ps.subscribe("show-upcoming", showUpcoming);
+  ps.subscribe("show-all", reloadProjectDisplay);
 }

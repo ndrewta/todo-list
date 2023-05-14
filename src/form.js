@@ -40,6 +40,7 @@ export default function createForm(elem) {
       type: "date",
       id: "date",
       name: "date",
+      min: new Date().toISOString().slice(0, 10),
       required: true,
       disabled: true,
     });

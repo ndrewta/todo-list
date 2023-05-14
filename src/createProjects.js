@@ -31,7 +31,7 @@ export default function createProjects() {
       .map((item) => ({ value: item, completed: false }));
     const project = new Project(title, date, priority, description, itemList);
     projects.push(project);
-    ps.publish("create-cover", projects);
+    ps.publish("show-all", projects);
     ps.publish("clear-form", null);
     formElem.reset();
   }
@@ -44,7 +44,7 @@ export default function createProjects() {
 
   function testSubmit(x) {
     const title = `Test ${x}`;
-    const date = "12/12/2000";
+    const date = new Date().toISOString().slice(0, 10);
     const priority = "High";
     const description = "asdasdasdasd";
     const itemList = ["x1", "x2", "x3"].map((item) => ({
@@ -55,7 +55,7 @@ export default function createProjects() {
 
     projects.push(project);
     sortDates();
-    ps.publish("create-cover", projects);
+    ps.publish("show-all", projects);
   }
 
   ps.subscribe("projects-request", publishUpdatedArray);

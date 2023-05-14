@@ -1,5 +1,9 @@
 import ps from "./pubsub";
 
+function getTodaysDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 function createHeader() {
   // Header
   const header = document.createElement("div");
@@ -14,6 +18,12 @@ function createHeader() {
   const title = document.createElement("h1");
   title.textContent = "Todo List";
   header.appendChild(title);
+
+  // Todays date
+
+  const date = document.createElement("h1");
+  date.textContent = `Today is ${getTodaysDate()}`;
+  header.appendChild(date);
 
   return header;
 }
@@ -30,7 +40,7 @@ function createList() {
   }
 
   // List elements
-  const elemNames = ["New Project", "Today", "Upcoming"];
+  const elemNames = ["New Project", "Today", "Upcoming", "Show all"];
   elemNames.forEach((name) => {
     const item = document.createElement("li");
     const button = document.createElement("button");
@@ -42,6 +52,19 @@ function createList() {
 
     if (name === "New Project") {
       button.addEventListener("click", () => ps.publish("toggle-form", null));
+    }
+    if (name === "Today") {
+      button.addEventListener("click", () =>
+        ps.publish("show-today", getTodaysDate())
+      );
+    }
+    if (name === "Upcoming") {
+      button.addEventListener("click", () =>
+        ps.publish("show-upcoming", getTodaysDate())
+      );
+    }
+    if (name === "Show all") {
+      button.addEventListener("click", () => ps.publish("show-all", null));
     }
   });
 
