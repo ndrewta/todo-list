@@ -9,6 +9,7 @@ module.exports = {
     pubSub: "./src/pubsub.js",
     createProjects: "./src/createProjects.js",
     displayProjects: "./src/displayProjects.js",
+    localStorage: "./src/localStorage.js",
   },
   plugins: [
     new HtmlWebpackPlugin({

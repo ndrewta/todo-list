@@ -34,12 +34,23 @@ export default function createProjects() {
     ps.publish("show-all", projects);
     ps.publish("clear-form", null);
     formElem.reset();
+    // Store to local storage
+    const json = JSON.stringify(projects);
+    const key = "projects";
+    const value = json;
+    const obj = { key, value };
+    ps.publish("store-local", obj);
   }
 
   function publishUpdatedArray() {
     // Publish updated projects array
     sortDates();
     ps.publish("projects-update", projects);
+  }
+
+  function setLocalStorage(value) {
+    projects = value;
+    ps.publish("show-all", projects);
   }
 
   function testSubmit(x) {
@@ -56,9 +67,16 @@ export default function createProjects() {
     projects.push(project);
     sortDates();
     ps.publish("show-all", projects);
+    // Store to local storage
+    const json = JSON.stringify(projects);
+    const key = "projects";
+    const value = json;
+    const obj = { key, value };
+    ps.publish("store-local", obj);
   }
 
   ps.subscribe("projects-request", publishUpdatedArray);
+  ps.subscribe("set-local", setLocalStorage);
   ps.subscribe("submit-form", submit);
   ps.subscribe("test", testSubmit);
   return { projects };

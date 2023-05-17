@@ -67,6 +67,15 @@ export default function displayProjects(elem) {
     return id;
   }
 
+  function saveToLocal() {
+    // Store to local storage
+    const json = JSON.stringify(projects);
+    const key = "projects";
+    const value = json;
+    const obj = { key, value };
+    ps.publish("store-local", obj);
+  }
+
   function saveProject(project, index, itemList) {
     // Save title
     const title = document.querySelector("#titleDiv > input");
@@ -102,6 +111,7 @@ export default function displayProjects(elem) {
 
     clearDisplay();
     detailedDisplay(project, index);
+    saveToLocal();
   }
 
   function addChecklistItem(itemList, div) {
@@ -249,6 +259,7 @@ export default function displayProjects(elem) {
     // Delete selected project and reload content area
     projects.splice(index, 1);
     reloadProjectDisplay();
+    saveToLocal();
   }
 
   function detailedDisplay(project, index) {
@@ -320,7 +331,12 @@ export default function displayProjects(elem) {
       li.appendChild(checkbox);
       list.appendChild(li);
       checkbox.addEventListener("click", () => {
-        item.completed = true;
+        if (checkbox.checked) {
+          item.completed = true;
+        } else {
+          item.completed = false;
+        }
+        saveToLocal();
       });
     });
     const returnBtn = document.createElement("button");
