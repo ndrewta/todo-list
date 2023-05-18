@@ -5,8 +5,8 @@ export default function displayProjects(elem) {
   const content = document.querySelector(elem);
   let projects = [];
   function createCover(array, indexNumber) {
-    let index = indexNumber;
-    let project = array;
+    const index = indexNumber;
+    const project = array;
     if (index === null || index === undefined) {
       index = array.length - 1;
       project = project[index];
@@ -30,6 +30,36 @@ export default function displayProjects(elem) {
     date.textContent = `Due: ${dateData}`;
     dateDiv.appendChild(date);
     cover.appendChild(dateDiv);
+
+    const descriptionDiv = document.createElement("div");
+    const description = document.createElement("h2");
+    const descriptionData = project.description;
+    description.textContent = `Description: ${descriptionData}`;
+    descriptionDiv.appendChild(description);
+    cover.appendChild(descriptionDiv);
+
+    content.appendChild(cover);
+  }
+
+  function createTodayCover(array, indexNumber) {
+    const index = indexNumber;
+    const project = array;
+    if (index === null || index === undefined) {
+      index = array.length - 1;
+      project = project[index];
+    }
+
+    const cover = document.createElement("div");
+    cover.setAttribute("class", "cover");
+    cover.setAttribute("id", `cover${project.priority}`);
+    cover.setAttribute("data-id", index);
+
+    const titleDiv = document.createElement("div");
+    const title = document.createElement("h2");
+    const titleData = project.title;
+    title.textContent = `Title: ${titleData}`;
+    titleDiv.appendChild(title);
+    cover.appendChild(titleDiv);
 
     const descriptionDiv = document.createElement("div");
     const description = document.createElement("h2");
@@ -390,7 +420,7 @@ export default function displayProjects(elem) {
     ps.publish("projects-request", null);
     projects.forEach((project, index) => {
       if (project.date === today) {
-        createCover(project, index);
+        createTodayCover(project, index);
       }
     });
   }

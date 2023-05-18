@@ -1,9 +1,20 @@
+@font-face {
+  font-family: "glacial";
+  src: url("./glacial.woff") format("woff"),
+    url("./glacial.woff2") format("woff2");
+}
+
 body {
-  height: 100vh;
-  width: 100vw;
+  font-family: glacial, Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+}
+
+#page-wrapper {
   display: grid;
+  width: clamp(500px, 50%, 1000px);
+  height: 100vh;
+  margin: auto;
   grid-template-columns: 1fr 7fr;
   grid-template-rows: 100px 1fr 25px;
   grid-template-areas: "header header" "nav content" "footer footer";
@@ -22,16 +33,29 @@ li {
 #header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding: 15px;
   border: red solid 1px;
   grid-area: header;
   background-color: rgb(231, 188, 188);
+  box-shadow: 0x 1px 1px 1px rgb(109, 103, 103);
+}
+
+#left-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #nav {
   border: blue solid 1px;
   grid-area: nav;
+  padding: 5px;
   background-color: rgb(217, 217, 238);
+}
+
+#nav > ul {
+  padding: 0;
 }
 
 #content {
@@ -72,35 +96,25 @@ li {
 }
 
 .display {
-  border: rgb(113, 113, 221) solid;
-  border-radius: 15px;
-  box-shadow: 3px 3px 10px rgb(204, 196, 196);
-  width: 300px;
-  height: 300px;
-  margin-right: 50px;
-  margin-bottom: 50px;
+  padding: 5px;
 }
 
 .cover {
-  border: rgb(113, 113, 221) solid;
-  border-radius: 15px;
-  box-shadow: 3px 3px 10px rgb(204, 196, 196);
-  width: 300px;
-  height: 300px;
-  margin-right: 50px;
-  margin-bottom: 50px;
+  border: rgb(113, 113, 221, 25%) solid;
+  height: 175px;
+  margin-bottom: 5px;
 }
 
 #coverLow {
-  background-color: rgb(202, 255, 202);
+  background-color: rgb(202, 255, 202, 45%);
 }
 
 #coverMedium {
-  background-color: rgb(250, 250, 189);
+  background-color: rgb(250, 250, 189, 45%);
 }
 
 #coverHigh {
-  background-color: rgb(252, 143, 143);
+  background-color: rgba(255, 54, 54, 45%);
 }
 
 #listItems {
@@ -113,4 +127,13 @@ li {
   display: flex;
   justify-content: start;
   align-items: center;
+}
+
+#nav-list > li > button {
+  width: 100%;
+  height: 40px;
+  font-size: 14px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
 }

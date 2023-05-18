@@ -1,4 +1,5 @@
 import ps from "./pubsub";
+import logo from "./logo.png";
 
 function getTodaysDate() {
   return new Date().toISOString().slice(0, 10);
@@ -9,20 +10,26 @@ function createHeader() {
   const header = document.createElement("div");
   header.setAttribute("id", "header");
 
+  // Logo + title div
+  const leftDiv = document.createElement("div");
+  leftDiv.setAttribute("id", "left-div");
+  header.appendChild(leftDiv);
+
   // Logo
-  const img = document.createElement("p");
-  img.textContent = "Img placeholder";
-  header.appendChild(img);
+  const headerLogo = new Image();
+  headerLogo.src = logo;
+  leftDiv.appendChild(headerLogo);
 
   // Title
   const title = document.createElement("h1");
   title.textContent = "Todo List";
-  header.appendChild(title);
+  leftDiv.appendChild(title);
 
   // Todays date
 
   const date = document.createElement("h1");
-  date.textContent = `Today is ${getTodaysDate()}`;
+  const currentDate = new Date();
+  date.textContent = `Today is ${currentDate.toLocaleDateString()}`;
   header.appendChild(date);
 
   return header;
@@ -31,6 +38,7 @@ function createHeader() {
 function createList() {
   // List
   const list = document.createElement("ul");
+  list.setAttribute("id", "nav-list");
 
   // Camel case
   function toCamelCase(str) {
@@ -111,6 +119,10 @@ export default function init() {
   // Cache body
   const body = document.querySelector("body");
 
+  // Div
+  const div = document.createElement("div");
+  div.setAttribute("id", "page-wrapper");
+
   // Header
   const header = createHeader();
 
@@ -124,8 +136,9 @@ export default function init() {
   const footer = createFooter();
 
   // Append to body
-  body.appendChild(header);
-  body.appendChild(nav);
-  body.appendChild(content);
-  body.appendChild(footer);
+  div.appendChild(header);
+  div.appendChild(nav);
+  div.appendChild(content);
+  div.appendChild(footer);
+  body.appendChild(div);
 }
