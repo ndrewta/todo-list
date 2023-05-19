@@ -1,7 +1,11 @@
+import { add } from "date-fns";
 import ps from "./pubsub";
+import plusIcon from "./plusIcon.png";
+import minusIcon from "./minusIcon.png";
 
 export default function createForm(elem) {
   const content = document.querySelector(elem);
+
   function createTitleInput() {
     const div = document.createElement("div");
     // Label
@@ -17,7 +21,6 @@ export default function createForm(elem) {
       id: "title",
       name: "title",
       required: true,
-      disabled: true,
     });
     // Append
     div.appendChild(label);
@@ -42,7 +45,6 @@ export default function createForm(elem) {
       name: "date",
       min: new Date().toISOString().slice(0, 10),
       required: true,
-      disabled: true,
     });
     // Append
     div.appendChild(label);
@@ -65,7 +67,6 @@ export default function createForm(elem) {
       id: "description",
       name: "description",
       required: true,
-      disabled: true,
     });
     // Append
     div.appendChild(label);
@@ -115,13 +116,9 @@ export default function createForm(elem) {
       textContent: "Add items ",
       for: "itemBtn",
     });
-    const addBtn = document.createElement("button");
-    Object.assign(addBtn, {
-      textContent: "+ icon",
-      id: "itemBtn",
-      type: "button",
-      disabled: true,
-    });
+    const addBtn = new Image();
+    addBtn.src = plusIcon;
+    addBtn.setAttribute("class", "form-add-remove-btns");
 
     // List div
     const list = document.createElement("ul");
@@ -142,12 +139,9 @@ export default function createForm(elem) {
         id,
       });
       // Remove button
-      const removeBtn = document.createElement("button");
-      Object.assign(removeBtn, {
-        textContent: "- icon",
-        id,
-        type: "button",
-      });
+      const removeBtn = new Image();
+      removeBtn.src = minusIcon;
+      removeBtn.setAttribute("class", "form-add-remove-btns");
 
       // Hook eventListener to remove button
       removeBtn.addEventListener("click", () => {
@@ -189,7 +183,6 @@ export default function createForm(elem) {
       textContent: "Submit",
       type: "submit",
       id: "submit",
-      disabled: true,
     });
     // Clear button
     const resetBtn = document.createElement("button");
@@ -197,13 +190,18 @@ export default function createForm(elem) {
       textContent: "Clear",
       type: "reset",
       id: "clear",
-      disabled: true,
     });
     resetBtn.addEventListener("click", clearListItems);
     div.appendChild(submitBtn);
     div.appendChild(resetBtn);
 
     return div;
+  }
+
+  function clearDisplay() {
+    while (content.hasChildNodes()) {
+      content.removeChild(content.firstChild);
+    }
   }
 
   function createLayout() {
@@ -231,27 +229,11 @@ export default function createForm(elem) {
       e.preventDefault();
       ps.publish("submit-form", { formElem: form });
     });
-    form.addEventListener("submit", () => ps.publish("toggle-form", null));
+    form.addEventListener("submit", () => ps.publish("show-all", null));
 
-    return div;
+    clearDisplay();
+    content.appendChild(form);
   }
 
-  function toggleForm() {
-    const formDiv = document.querySelector(".form");
-    const formElements = formDiv.querySelectorAll("input, textarea, button");
-    formDiv.classList.toggle("form-toggle");
-    formElements.forEach((inputElem) => {
-      const item = inputElem;
-      if (item.disabled) {
-        item.disabled = false;
-      } else {
-        item.disabled = true;
-      }
-    });
-  }
-
-  const form = createLayout();
-  content.appendChild(form);
-  ps.subscribe("toggle-form", toggleForm);
-  ps.subscribe("clear-form", clearListItems);
+  ps.subscribe("toggle-form", createLayout);
 }

@@ -32,7 +32,6 @@ export default function createProjects() {
     const project = new Project(title, date, priority, description, itemList);
     projects.push(project);
     ps.publish("show-all", projects);
-    ps.publish("clear-form", null);
     formElem.reset();
     // Store to local storage
     const json = JSON.stringify(projects);
@@ -53,31 +52,8 @@ export default function createProjects() {
     ps.publish("show-all", projects);
   }
 
-  function testSubmit(x) {
-    const title = `Test ${x}`;
-    const date = new Date().toISOString().slice(0, 10);
-    const priority = "High";
-    const description = "asdasdasdasd";
-    const itemList = ["x1", "x2", "x3"].map((item) => ({
-      value: item,
-      completed: false,
-    }));
-    const project = new Project(title, date, priority, description, itemList);
-
-    projects.push(project);
-    sortDates();
-    ps.publish("show-all", projects);
-    // Store to local storage
-    const json = JSON.stringify(projects);
-    const key = "projects";
-    const value = json;
-    const obj = { key, value };
-    ps.publish("store-local", obj);
-  }
-
   ps.subscribe("projects-request", publishUpdatedArray);
   ps.subscribe("set-local", setLocalStorage);
   ps.subscribe("submit-form", submit);
-  ps.subscribe("test", testSubmit);
   return { projects };
 }

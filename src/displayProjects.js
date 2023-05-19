@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, differenceInDays, parseISO } from "date-fns";
 import ps from "./pubsub";
 
 export default function displayProjects(elem) {
@@ -27,7 +27,22 @@ export default function displayProjects(elem) {
     const dateDiv = document.createElement("div");
     const date = document.createElement("h2");
     const dateData = format(new Date(project.date), "dd/MM/yyyy");
-    date.textContent = `Due: ${dateData}`;
+    const dateRemaining = differenceInDays(parseISO(project.date), new Date());
+    if (dateRemaining < 0) {
+      const positiveNumber = dateRemaining * -1;
+      if (positiveNumber === 1) {
+        date.textContent = `Due: ${dateData} (Overdue by ${positiveNumber} day)`;
+      } else {
+        date.textContent = `Due: ${dateData} (Overdue by ${positiveNumber} days.`;
+      }
+    } else if (dateRemaining === 0) {
+      date.textContent = `Due: ${dateData} (Due today!)`;
+    } else if (dateRemaining === 1) {
+      date.textContent = `Due: ${dateData} (${dateRemaining} day remaining)`;
+    } else {
+      date.textContent = `Due: ${dateData} (${dateRemaining} days remaining)`;
+    }
+
     dateDiv.appendChild(date);
     cover.appendChild(dateDiv);
 

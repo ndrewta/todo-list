@@ -59,7 +59,9 @@ function createList() {
     list.appendChild(item);
 
     if (name === "New Project") {
-      button.addEventListener("click", () => ps.publish("toggle-form", null));
+      button.addEventListener("click", () =>
+        ps.publish("toggle-form", "#content")
+      );
     }
     if (name === "Today") {
       button.addEventListener("click", () =>
