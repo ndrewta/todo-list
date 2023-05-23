@@ -169,6 +169,7 @@ export default function displayProjects(elem) {
       type: "text",
       id: `item${itemList.length}`,
     });
+    input.setAttribute("maxlength", 35);
     li.appendChild(input);
     div.appendChild(li);
     const obj = { value: "", completed: false };
@@ -185,7 +186,9 @@ export default function displayProjects(elem) {
     // Edit selected project
     const project = projects[index];
     const { itemList } = project;
-    const checklistDiv = document.getElementById("checklistdiv");
+    const checklistElemDivider = document.getElementById(
+      "checklist-elem-divider"
+    );
     const checklistUl = document.getElementById("checklist");
     const li = document.querySelectorAll(`#checklist > li`);
     for (let i = 0; i < itemList.length; i += 1) {
@@ -201,6 +204,8 @@ export default function displayProjects(elem) {
         id: `item${i}`,
         value: itemList[i].value,
       });
+
+      input.setAttribute("maxlength", 35);
       el.appendChild(input);
     }
     // Change edit button to save
@@ -225,11 +230,12 @@ export default function displayProjects(elem) {
     addBtn.addEventListener("click", () =>
       addChecklistItem(itemList, checklistUl)
     );
-    checklistDiv.appendChild(addBtn);
+    checklistElemDivider.appendChild(addBtn);
 
     // Edit priority
     const projectPriority = project.priority;
     const priorityDiv = document.getElementById("priorityDiv");
+    priorityDiv.setAttribute("class", "editDiv");
     const priorityH2 = document.querySelector("#priorityDiv > h2");
     priorityH2.textContent = "Priority: ";
     const prioritySelect = document.createElement("select");
@@ -267,6 +273,7 @@ export default function displayProjects(elem) {
 
     // Edit title
     const titleDiv = document.getElementById("titleDiv");
+    titleDiv.setAttribute("class", "editDiv");
     const titleH2 = document.querySelector("#titleDiv > h2");
     titleH2.textContent = "Title: ";
     const titleInput = document.createElement("input");
@@ -274,10 +281,12 @@ export default function displayProjects(elem) {
       defaultValue: project.title,
       name: "title",
     });
+    titleInput.setAttribute("maxlength", 25);
     titleDiv.appendChild(titleInput);
 
     // Edit date
     const dateDiv = document.getElementById("dateDiv");
+    dateDiv.setAttribute("class", "editDiv");
     const dateH2 = document.querySelector("#dateDiv > h2");
     dateH2.textContent = "Due: ";
     const dateInput = document.createElement("input");
@@ -290,6 +299,7 @@ export default function displayProjects(elem) {
 
     // Edit description
     const descriptionDiv = document.getElementById("descriptionDiv");
+    descriptionDiv.setAttribute("class", "editDiv");
     const descriptionH2 = document.querySelector("#descriptionDiv > h2");
     descriptionH2.textContent = "Description: ";
     const descriptionInput = document.createElement("textarea");
@@ -297,6 +307,7 @@ export default function displayProjects(elem) {
       name: "description",
       defaultValue: project.description,
     });
+    descriptionInput.setAttribute("maxlength", 50);
     descriptionDiv.appendChild(descriptionInput);
   }
 
@@ -346,7 +357,9 @@ export default function displayProjects(elem) {
     display.appendChild(priorityDiv);
 
     const listDiv = document.createElement("div");
-    listDiv.setAttribute("id", "checklistdiv");
+    listDiv.setAttribute("id", "checklistDiv");
+    const checklistElemDivider = document.createElement("div");
+    checklistElemDivider.setAttribute("id", "checklist-elem-divider");
     const listTitle = document.createElement("h2");
     listTitle.textContent = "Checklist:";
 
@@ -372,8 +385,8 @@ export default function displayProjects(elem) {
       if (item.completed) {
         checkbox.checked = true;
       }
-      li.appendChild(label);
       li.appendChild(checkbox);
+      li.appendChild(label);
       list.appendChild(li);
       checkbox.addEventListener("click", () => {
         if (checkbox.checked) {
@@ -384,6 +397,9 @@ export default function displayProjects(elem) {
         saveToLocal();
       });
     });
+
+    const buttonDiv = document.createElement("div");
+    buttonDiv.setAttribute("id", "buttonDiv");
     const returnBtn = document.createElement("button");
     Object.assign(returnBtn, {
       textContent: "Return",
@@ -407,12 +423,14 @@ export default function displayProjects(elem) {
     editBtn.addEventListener("click", () => editProject(index));
     deleteBtn.addEventListener("click", () => deleteProject(index));
 
-    listDiv.appendChild(listTitle);
+    checklistElemDivider.appendChild(listTitle);
+    listDiv.appendChild(checklistElemDivider);
     listDiv.appendChild(list);
-    listDiv.appendChild(returnBtn);
-    listDiv.appendChild(editBtn);
-    listDiv.appendChild(deleteBtn);
+    buttonDiv.appendChild(returnBtn);
+    buttonDiv.appendChild(editBtn);
+    buttonDiv.appendChild(deleteBtn);
     display.appendChild(listDiv);
+    display.appendChild(buttonDiv);
     content.appendChild(display);
   }
 

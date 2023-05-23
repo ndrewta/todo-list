@@ -22,6 +22,7 @@ export default function createForm(elem) {
       name: "title",
       required: true,
     });
+    input.setAttribute("maxlength", 25);
     // Append
     div.appendChild(label);
     div.appendChild(input);
@@ -68,6 +69,7 @@ export default function createForm(elem) {
       name: "description",
       required: true,
     });
+    textArea.setAttribute("maxlength", 50);
     // Append
     div.appendChild(label);
     div.appendChild(textArea);
@@ -111,6 +113,9 @@ export default function createForm(elem) {
   }
   function createListItems() {
     const div = document.createElement("div");
+    div.setAttribute("id", "form-item-list");
+    const elemDivider = document.createElement("div");
+    elemDivider.setAttribute("id", "form-elem-divider");
     const divLabel = document.createElement("label");
     Object.assign(divLabel, {
       textContent: "Add items ",
@@ -138,6 +143,7 @@ export default function createForm(elem) {
         name: "items",
         id,
       });
+      input.setAttribute("maxlength", 35);
       // Remove button
       const removeBtn = new Image();
       removeBtn.src = minusIcon;
@@ -159,8 +165,9 @@ export default function createForm(elem) {
     addBtn.addEventListener("click", createInput);
 
     // Append
-    div.appendChild(divLabel);
-    div.appendChild(addBtn);
+    elemDivider.appendChild(divLabel);
+    elemDivider.appendChild(addBtn);
+    div.appendChild(elemDivider);
     div.appendChild(list);
 
     return div;
